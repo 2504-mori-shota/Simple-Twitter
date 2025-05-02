@@ -184,8 +184,6 @@ public class UserDao {
 
 	    	    PreparedStatement ps = null;
 
-
-
 	    	    try {
 	    	        StringBuilder sql = new StringBuilder();
 	    	        sql.append("UPDATE users SET ");
@@ -193,9 +191,7 @@ public class UserDao {
 	    	        sql.append("    name = ?, ");
 	    	        sql.append("    email = ?, ");
 
-	    	        String password = user.getPassword();
-	    	        ///不必要なelse文の削除、重複したコードの削減
-	    	        if(!StringUtils.isEmpty(password)) {
+	    	        if (!StringUtils.isBlank(user.getPassword())) {
 	    	        	sql.append("    password = ?, ");
 	    	        }
 
@@ -203,25 +199,18 @@ public class UserDao {
 	    	        sql.append("    updated_date = CURRENT_TIMESTAMP ");
 	    	        sql.append("WHERE id = ?");
 
-
-
 	    	        ps = connection.prepareStatement(sql.toString());
 
 	    	        ps.setString(1, user.getAccount());
 	    	        ps.setString(2, user.getName());
 	    	        ps.setString(3, user.getEmail());
-
-	    	        if(!StringUtils.isEmpty(password)) {
-	    	        	ps.setString(4, user.getPassword());
-	    	        	ps.setString(5, user.getDescription());
-		 	    	    ps.setInt(6, user.getId());
-
+	    	        if (StringUtils.isEmpty(user.getPassword())) {
+	    	        	ps.setString(4, user.getDescription());
+	 	 	    	    ps.setInt(5, user.getId());
 	    	        }
-
-	 	    	    ps.setString(4, user.getDescription());
-	 	    	    ps.setInt(5, user.getId());
-
-
+	 	    	   	ps.setString(4, user.getPassword());
+	 	    	   	ps.setString(5, user.getDescription());
+	 	    	   	ps.setInt(6, user.getId());
 
 	    	        int count = ps.executeUpdate();
 	    	        if (count == 0) {

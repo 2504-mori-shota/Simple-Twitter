@@ -76,14 +76,12 @@ public class SettingServlet extends HttpServlet {
                 errorMessages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
             }
         }
-        ///パスワードを入力してください表示場所
         if (errorMessages.size() != 0) {
             request.setAttribute("errorMessages", errorMessages);
             request.setAttribute("user", user);
             request.getRequestDispatcher("setting.jsp").forward(request, response);
             return;
         }
-
         session.setAttribute("loginUser", user);
         response.sendRedirect("./");
     }
@@ -122,11 +120,9 @@ public class SettingServlet extends HttpServlet {
         } else if (20 < account.length()) {
             errorMessages.add("アカウント名は20文字以下で入力してください");
         }
-
         if (!StringUtils.isEmpty(email) && (50 < email.length())) {
             errorMessages.add("メールアドレスは50文字以下で入力してください");
         }
-
         if (errorMessages.size() != 0) {
             return false;
         }

@@ -123,21 +123,11 @@ public class UserService {
 
 	        Connection connection = null;
 
-	        ///これより下で条件分岐？→パスワードが入っていない場合をif文で分岐させる？☑
-
-	        ///null　-> isEmptyの書き換え方法わからない
 	        try {
-
-	        	String password = user.getPassword();
-
-	        	//[ !StringUtils.isEmpty(password))]が正しいかは判断できていない
-	        	//[ user.getPassword() != null]が変更前
-	        	if( !StringUtils.isEmpty(password)) {
-
+	        	if ( !StringUtils.isEmpty(user.getPassword())) {
 	        		 // パスワード暗号化
 	        		String encPassword = CipherUtil.encrypt(user.getPassword());
 	        		user.setPassword(encPassword);
-
 	        	}
 
 	        	connection = getConnection();

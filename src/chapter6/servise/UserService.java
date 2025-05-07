@@ -44,6 +44,7 @@ public class UserService {
 	            user.setPassword(encPassword);
 
 	            connection = getConnection();
+
 	            new UserDao().insert(connection, user);
 	            commit(connection);
 	        } catch (RuntimeException e) {
@@ -109,6 +110,28 @@ public class UserService {
 	        } catch (Error e) {
 	            rollback(connection);
 	    	  log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+	            throw e;
+	        } finally {
+	            close(connection);
+	        }
+	    }
+
+
+
+	    public User select(String account) {
+
+	        Connection connection = null;
+	        try {
+	            connection = getConnection();
+	            User user = new UserDao().select(connection, account);
+	            commit(connection);
+
+	            return user;
+	        } catch (RuntimeException e) {
+	            rollback(connection);
+	            throw e;
+	        } catch (Error e) {
+	            rollback(connection);
 	            throw e;
 	        } finally {
 	            close(connection);

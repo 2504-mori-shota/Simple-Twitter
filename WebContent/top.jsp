@@ -72,8 +72,21 @@
                 			</span>
                 			<span class="name"><c:out value="${message.name}" /></span>
             			</div>
-            		<div class="text"><c:out value="${message.text}" /></div>
+            		<div class="text"><pre><c:out value="${message.text}" /></pre></div>
             		<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+					<!-- ログイン後に以下のボタンが表示されるようにする -->
+					<c:if test="${ isShowMessageForm }" >
+						<c:if test="${message.userId == loginUser.id }"><!-- 追加した条件分岐 -->
+							<form action="edit" method="get">
+								<input name="id" value="${message.id}" type="hidden"/>
+								<input type="submit" value="編集">
+							</form>
+            				<form action="deleteMessage" method="post">
+            					<input name="id" value="${message.id}" type="hidden"/>
+            					<input type="submit" value="削除">
+            				</form>
+            			</c:if>
+					</c:if>
         			</div>
     			</c:forEach>
 			</div>

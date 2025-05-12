@@ -81,6 +81,9 @@ a.profile .account {
 
 .message-icon .text {
 	height: 40px;
+	p {
+  white-space: pre-wrap;
+	}
 }
 
 .message-icon .message {

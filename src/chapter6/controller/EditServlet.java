@@ -48,7 +48,7 @@ public class EditServlet extends HttpServlet {
 
 	  String strMessageId = request.getParameter("id");
 
-	  if (!strMessageId.matches("^[0-9]+$") || strMessageId == null) {
+	  if (!strMessageId.matches("^[0-9]+$") || StringUtils.isBlank(strMessageId)) {
     	  errorMessages.add("不正なパラメータが入力されました");
           session.setAttribute("errorMessages", errorMessages);
           response.sendRedirect("./");

@@ -19,7 +19,6 @@ import chapter6.logging.InitApplication;
 import chapter6.servise.MessageService;
 
 @WebServlet(urlPatterns = { "/edit" })
-
 public class EditServlet extends HttpServlet {
 
     /**
@@ -47,25 +46,25 @@ public class EditServlet extends HttpServlet {
 	  HttpSession session = request.getSession();
 	  List<String> errorMessages = new ArrayList<String>();
 
-	  String strId = request.getParameter("id");
+	  String strMessageId = request.getParameter("id");
 
-	  if (!strId.matches("^[0-9]+$")) {
+	  if (!strMessageId.matches("^[0-9]+$") || strMessageId == null) {
     	  errorMessages.add("不正なパラメータが入力されました");
           session.setAttribute("errorMessages", errorMessages);
           response.sendRedirect("./");
           return;
 	  }
 
-	  Message messageId = new MessageService().select(Integer.parseInt(strId));
+	  Message messages = new MessageService().select(Integer.parseInt(strMessageId));
 
-	  if (messageId == null) {
+	  if (messages == null) {
 		  errorMessages.add("不正なパラメータが入力されました");
 	      session.setAttribute("errorMessages", errorMessages);
 	      response.sendRedirect("./");
 	       return;
 	  }
 
-		  request.setAttribute("message", messageId);
+		  request.setAttribute("messages", messages);
 	      request.getRequestDispatcher("edit.jsp").forward(request, response);
     }
 

@@ -69,7 +69,7 @@ public class MessageDao {
     }
 
 
-    public void delete(Connection connection, Message message) {
+    public void delete(Connection connection, int id) {
 
     	log.info(new Object(){}.getClass().getEnclosingClass().getName() +
     	  " : " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -82,7 +82,7 @@ public class MessageDao {
 
     	        ps = connection.prepareStatement(sql.toString());
 
-    	        ps.setInt(1, message.getId());
+    	        ps.setInt(1, id);
     	        ps.executeUpdate();
     	    } catch (SQLException e) {
     		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
@@ -102,7 +102,8 @@ public class MessageDao {
     	   	try {
     	    	StringBuilder sql = new StringBuilder();
     	    	sql.append("UPDATE messages ");
-    	    	sql.append("SET text = ? ");
+    	    	sql.append("SET text = ?, ");
+    	    	sql.append("updated_date = CURRENT_TIMESTAMP ");
     	        sql.append("WHERE id = ? ");
     	        ps = connection.prepareStatement(sql.toString());
 

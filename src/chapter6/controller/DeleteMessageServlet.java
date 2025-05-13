@@ -14,7 +14,6 @@ import chapter6.logging.InitApplication;
 import chapter6.servise.MessageService;
 
 @WebServlet(urlPatterns = { "/deleteMessage" })
-
 public class DeleteMessageServlet extends HttpServlet {
 
     /**
@@ -39,11 +38,10 @@ public class DeleteMessageServlet extends HttpServlet {
         log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-
         Message message = new Message();
         message.setId(Integer.parseInt(request.getParameter("id")));
 
-        new MessageService().delete(message);
+        new MessageService().delete(message.getId());
         response.sendRedirect("./");
     }
 

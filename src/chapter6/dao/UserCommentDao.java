@@ -33,7 +33,7 @@ public class UserCommentDao {
 
     }
 
-    public List<UserComment> select(Connection connection, Integer id, int num) {
+    public List<UserComment> select(Connection connection, int num) {
 
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -52,16 +52,10 @@ public class UserCommentDao {
             sql.append("FROM comments ");
             sql.append("INNER JOIN users ");
             sql.append("ON comments.user_id = users.id ");
-            if (id != null) {
-            	sql.append("WHERE user_id = ? ");
-            }
             //ASCで昇順に変更 DESCで降順になる
             sql.append("ORDER BY created_date ASC limit " + num);
-
+            //コメントの表示はuser_idに関係なく表示したいのでUserMessageDaoとは異なりidの条件をつける必要がない
             ps = connection.prepareStatement(sql.toString());
-            if (id != null) {
-            	 ps.setInt(1, id);
-            }
 
             ResultSet rs = ps.executeQuery();
 

@@ -27,7 +27,7 @@ public class LoginFilter implements Filter {
         User loginUser = (User) session.getAttribute("loginUser");
         List<String> errorMessages = new ArrayList<String>();
 
-        if(loginUser == null){
+        if (loginUser == null) {
         	errorMessages.add("ログインをしてください。");
             session.setAttribute("errorMessages", errorMessages);
             //↓Http型変換してリダイレクトさせる

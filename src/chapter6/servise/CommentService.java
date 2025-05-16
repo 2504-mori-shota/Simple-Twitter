@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
-
 import chapter6.beans.Comment;
 import chapter6.beans.UserComment;
 import chapter6.dao.CommentDao;
@@ -57,7 +55,7 @@ public class CommentService {
         }
     }
 
-    public List<UserComment> select(String userId) {
+    public List<UserComment> select() {
 
     	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
             " : " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -67,11 +65,7 @@ public class CommentService {
             Connection connection = null;
             try {
                 connection = getConnection();
-                Integer id = null;
-                if (!StringUtils.isEmpty(userId)) {
-                    id = Integer.parseInt(userId);
-                }
-                List<UserComment> comments = new UserCommentDao().select(connection, id,  LIMIT_NUM);
+                List<UserComment> comments = new UserCommentDao().select(connection, LIMIT_NUM);
                 commit(connection);
 
                 return comments;

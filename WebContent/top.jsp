@@ -49,6 +49,12 @@
 	    			<c:remove var="errorMessages" scope="session" />
 				</c:if>
 
+				<div class="dates">
+					<form action="./" method="get">
+						日付検索<input type="date" name="start_date" max="2100-12-31" min="2020-01-01" value="${start }">～<input type="date" name="end_date" max="2100-12-31" min="2020-01-01" value="${end }">
+						<input type="submit" value="検索">
+					</form>
+				</div>
 				<div class="form-area">
 	    			<c:if test="${ isShowMessageForm }">
 	        			<form action="message" method="post">
@@ -76,6 +82,14 @@
 		            		<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 							<!-- ログイン後に以下のボタンが表示されるようにする -->
 							<c:if test="${ isShowMessageForm }" >
+								<div class="comments">
+									<form action="comment" method="post">
+										<input name="id" value="${message.id}" type="hidden"/>
+										<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+								 		<br />
+			            				<input type="submit" value="返信">（140文字まで）
+									</form>
+								</div>
 								<c:if test="${message.userId == loginUser.id }"><!-- 追加した条件分岐 -->
 									<form action="edit" method="get">
 										<input name="id" value="${message.id}" type="hidden"/>
@@ -87,6 +101,16 @@
 					 				</form>
 					 			</c:if>
 							</c:if>
+							<c:forEach items="${comments }" var="comment">
+								<c:if test="${comment.messageId == message.id }">
+									<div class="account-name">
+							 			<span class="account"><c:out value="${comment.account}" /></span>
+							 			<span class="name"><c:out value="${comment.name}" /></span>
+									</div>
+					            	<div class="text"><pre><c:out value="${comment.text}" /></pre></div>
+					            	<div class="date"><fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+			 					</c:if>
+			 				</c:forEach>
 			 			</div>
 	    			</c:forEach>
 				</div>

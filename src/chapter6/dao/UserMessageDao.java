@@ -34,13 +34,14 @@ public class UserMessageDao {
 
     }
 
-    public List<UserMessage> select(Connection connection, Integer id, int num) {
+    public List<UserMessage> select(Connection connection, Integer id, String startDate, String endDate, int num) {
 
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
         PreparedStatement ps = null;
         try {
+        	//StringBuilderの役割；apeendで様々なStringをくっつけてくれている。
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT ");
             sql.append("    messages.id as id, ");
@@ -52,14 +53,24 @@ public class UserMessageDao {
             sql.append("FROM messages ");
             sql.append("INNER JOIN users ");
             sql.append("ON messages.user_id = users.id ");
+            // ↓created_dateの前にmessages.をつける必要あり。
+        	// どっちのcreated_dateかわからないから
+            sql.append("WHERE messages.created_date BETWEEN ? AND ? ");
+
             if (id != null) {
-            	sql.append("WHERE user_id = ? ");
+            	sql.append("AND user_id = ? ");
             }
+
             sql.append("ORDER BY created_date DESC limit " + num);
 
             ps = connection.prepareStatement(sql.toString());
+
+        	//String型のままでよい（理由は上記にあり）
+            // 上記SQLクエリの？に値を入れる
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
             if (id != null) {
-            	 ps.setInt(1, id);
+            	 ps.setInt(3, id);
             }
 
             ResultSet rs = ps.executeQuery();
@@ -73,6 +84,8 @@ public class UserMessageDao {
             close(ps);
         }
     }
+
+
 
     private List<UserMessage> toUserMessages(ResultSet rs) throws SQLException {
 

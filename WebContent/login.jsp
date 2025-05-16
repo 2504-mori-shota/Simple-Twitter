@@ -23,6 +23,8 @@
                         </c:forEach>
                     </ul>
                 </div>
+                <!-- 特に引き継ぐ必要のないlogin.jspのセッションはログイン画面で破棄する -->
+               	<c:remove var="errorMessages" scope="session" />
             </c:if>
 
             <form action="login" method="post"><br />
